@@ -1,5 +1,8 @@
 from input_error import input_error
 from address_book import AddressBook
+from exceptions import BirthdayArgsException
+
+ADDRESS_BOOK_FILE_NAME = 'address_book.bin'
 
 
 def parse_input(user_input):
@@ -20,7 +23,25 @@ def add_contact(args, book):
 
 @input_error
 def add_birthday(args, book):
-    pass
+    try:
+        name, birthday = args
+    except ValueError:
+        raise BirthdayArgsException
+
+    book.add_birthday(name, birthday)
+
+    return "Birthday has been added."
+
+
+@input_error
+def show_birthday(args, book):
+    name, = args
+
+    return book.show_birthday(name)
+
+
+def birthdays(book):
+    return book.birthdays()
 
 
 @input_error
@@ -38,15 +59,7 @@ def find_phone(args, book):
 
 
 def get_all_contacts(book):
-    res = ""
-
-    for name, record in book.data.items():
-        res += f"{str(record)}\n"
-
-    if res == "":
-        return "Address book is empty."
-
-    return res
+    return str(book)
 
 
 @input_error
@@ -67,6 +80,19 @@ def delete_contact(args, book):
     return "Contact has been deleted."
 
 
+def save_to_file(book):
+    book.save_to_file(ADDRESS_BOOK_FILE_NAME)
+
+    return "Address book has been saved."
+
+
+@input_error
+def read_from_file(book):
+    book.read_from_file(ADDRESS_BOOK_FILE_NAME)
+
+    return "Address book has been loaded."
+
+
 def main():
     print("Welcome to the assistant bot!")
     book = AddressBook()
@@ -83,7 +109,11 @@ def main():
         elif command == "add":
             print(add_contact(args, book))
         elif command == "add-birthday":
-            print()
+            print(add_birthday(args, book))
+        elif command == "show-birthday":
+            print(show_birthday(args, book))
+        elif command == "birthdays":
+            print(birthdays(book))
         elif command == "change":
             print(change_contact(args, book))
         elif command == "phone":
@@ -94,6 +124,10 @@ def main():
             print(get_all_contacts(book))
         elif command == "delete":
             print(delete_contact(args, book))
+        elif command == "save":
+            print(save_to_file(book))
+        elif command == "load":
+            print(read_from_file(book))
         else:
             print("Invalid command.")
 

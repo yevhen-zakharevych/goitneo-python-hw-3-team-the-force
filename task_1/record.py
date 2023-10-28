@@ -1,7 +1,7 @@
 from name import Name
 from phone import Phone
 from birthday import Birthday
-from phone_exception import PhoneException
+from exceptions import PhoneException
 
 
 class Record:
@@ -12,6 +12,9 @@ class Record:
 
     def add_birthday(self, birthday):
         self.birthday = Birthday(birthday)
+
+    def show_birthday(self):
+        return self.birthday
 
     def add_phone(self, phone):
         phone = Phone(phone)

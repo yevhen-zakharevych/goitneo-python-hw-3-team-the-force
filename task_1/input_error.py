@@ -1,5 +1,4 @@
-from phone_length_exception import PhoneLengthException
-from phone_exception import PhoneException
+from exceptions import BirthdayException,BirthdayArgsException, PhoneException, PhoneLengthException
 
 
 def input_error(func):
@@ -16,5 +15,11 @@ def input_error(func):
             return "Phone length should be 10."
         except PhoneException:
             return "Phone does not exist."
+        except BirthdayException:
+            return "Birthday should be format 'DD.MM.YYYY'"
+        except BirthdayArgsException:
+            return "Give me name and birthday please."
+        except FileNotFoundError:
+            return "No address book file."
 
     return inner
